@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-istio-ingress
+  namespace: bookinfo
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /(productpage|login|logout)
+        pathType: Exact
+        backend:
+          service:
+            name: productpage
+            port:
+              number: 9080
+  - http:
+      paths:
+      - path: /(|static|api/v1/products).*
+        pathType: Prefix
+        backend:
+          service:
+            name: productpage
+            port:
+              number: 9080
+
+  
